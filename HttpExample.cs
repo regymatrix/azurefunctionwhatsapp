@@ -18,7 +18,7 @@ namespace Company.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("Information is arrived.");
             //LeadLoverTeste
             string BaseUrl = "http://llapi.leadlovers.com/webapi/";
             Lead postLead;
@@ -34,13 +34,8 @@ namespace Company.Function
                 postLead = await System.Text.Json.JsonSerializer.DeserializeAsync<Lead>(content, new System.Text.Json.JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true });
             }
             //organizar number
-            string numero = postLead.phone;
-            string codePais = numero.Substring(0,3);
-            string ddd = numero.Substring(3,2);
-            string numerotelp1 = numero.Substring(5,5);
-            string numerotelp2 = numero.Substring(10,4);
-            postLead.phone=codePais+" ("+ddd+") "+numerotelp1+"-"+numerotelp2;
-
+            postLead.phone = NumberOrganization(postLead.phone);
+           
 
             //enviando para zapfacil
              string urlpost = "https://api.painel.zapfacil.com/api/webhooks/2URFOtV6w6Ww00A5NqwTeNABfxvJvR4X";
@@ -50,21 +45,17 @@ namespace Company.Function
                 var postResponse = await clientpost.PostAsJsonAsync(urlpost, postLead);
             }
 
-
-            //funcaopadrao
-            // string name = req.Query["name"];
-            // string idade= req.Query["idade"];
-
-            // string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            // dynamic data = JsonConvert.DeserializeObject(requestBody);
-            // name = name ?? data?.name;
-
-            // string responseMessage = string.IsNullOrEmpty(name)
-            //     ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-            //     : $"ok";
-
-            //return new OkObjectResult(responseMessage);
              return postLead;
+        }
+
+        private static string NumberOrganization(string number){
+           
+            string codePais = number.Substring(0,3);
+            string ddd = number.Substring(3,2);
+            string numerotelp1 = number.Substring(5,5);
+            string numerotelp2 = number.Substring(10,4);            
+
+            return codePais+" ("+ddd+") "+numerotelp1+"-"+numerotelp2;
         }
     }
 }
