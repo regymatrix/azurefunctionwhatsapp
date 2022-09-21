@@ -23,7 +23,7 @@ namespace Company.Function
             string BaseUrl = "http://llapi.leadlovers.com/webapi/";
             Lead postLead;
             string email = req.Query["email"];
-            Uri url = new Uri(BaseUrl + "lead" + "?token=" + "95FDFBCDDD1945F49DDA15E7473C2C8B" + "&email=" + email);
+            Uri url = new Uri(BaseUrl + "lead" + "?token=" + "key" + "&email=" + email);
             //leadlover tratamento de dados
             using (HttpClient client = new HttpClient())
             {
