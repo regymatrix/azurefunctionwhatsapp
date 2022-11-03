@@ -27,7 +27,8 @@ namespace Company.Function
             //leadlover tratamento de dados
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = client.GetAsync(url).Result;
+                HttpResponseMessage response =  await client.GetAsync(url);
+                //HttpResponseMessage response =  client.GetAsync(url).Result;
                 // content =  response.Content.ReadAsStringAsync().Result;
                 var content = await response.Content.ReadAsStreamAsync();
 
